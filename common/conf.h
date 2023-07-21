@@ -21,45 +21,45 @@
    be relative (or in) the rwhois root directory */
 
 /* the location for the logging file, when not using syslog */
-#define DEFAULT_RWHOIS_LOG_FILE  "rwhoisd.log"
+#define DEFAULT_RWHOIS_LOG_FILE  "/var/log/rwhoisd.log"
 
 /* the location for the configuration file */
-#define DEFAULT_RWHOIS_CONFIG_FILE "rwhoisd.conf"
+#define DEFAULT_RWHOIS_CONFIG_FILE "/etc/rwhoisd/rwhoisd.conf"
 
 /* the path where the binaries run from the server are located
    (think "cgi-bin path") */
-#define DEFAULT_BIN_PATH "bin"
+#define DEFAULT_BIN_PATH "/usr/local/libexec/rwhoisd"
 
 /* the file that the badref, recuref stuff gets logged */
 /* this is currently unused */
 /* #define DEFAULT_NOTIFY_LOG "notify.log" */
 
 /* the file that contains X- directive definitions */
-#define DEFAULT_X_DIRECTIVE_FILE "rwhoisd.x.dir"
+#define DEFAULT_X_DIRECTIVE_FILE "/etc/rwhoisd/x-dir"
 
 /* the file that contains directive options */
-#define DEFAULT_DIRECTIVE_FILE "rwhoisd.dir"
+#define DEFAULT_DIRECTIVE_FILE "/etc/rwhoisd/directives"
 
 /* the top-level file describing the database schema */
-#define DEFAULT_AUTH_AREA_FILE "rwhoisd.auth_area"
+#define DEFAULT_AUTH_AREA_FILE "/etc/rwhoisd/auth_area"
 
 /* the file that register commands will be logged to */
 /* this is currently unused */
 /* #define DEFAULT_REGISTER_LOG "register.log" */
 
 /* the temporary directory used in the register process */
-#define DEFAULT_REGISTER_SPOOL "register_spool"
+#define DEFAULT_REGISTER_SPOOL "/tmp/register_spool"
 
 /* the punt file */
-#define DEFAULT_PUNT_FILE "rwhoisd.root"
+#define DEFAULT_PUNT_FILE "/etc/rwhoisd/root"
 
 /* the file describing what hosts are allowed to do what
    directives */
-#define DEFAULT_SECURITY_ALLOW "hosts.allow"
+#define DEFAULT_SECURITY_ALLOW "/etc/rwhoisd/hosts.allow"
 
 /* the file describing what hosts are not allowed to do what
    directives */
-#define DEFAULT_SECURITY_DENY "hosts.deny"
+#define DEFAULT_SECURITY_DENY "/etc/rwhoisd/hosts.deny"
 
 /* the port to listen to */
 #define DEFAULT_PORT 4321

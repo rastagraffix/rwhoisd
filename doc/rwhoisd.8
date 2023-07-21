@@ -55,6 +55,29 @@ Be very verbose.
 Log messages will be sent at the
 .Sy debug
 level.
+.Sh FILES
+.Bl -tag -compact -width /usr/local/libexec/rwhoisd/
+.It Pa /etc/rwhoisd/rwhoisd.conf
+The main configuration file.
+.It Pa /etc/rwhoisd/auth_area
+The database schema definition.
+.It Pa /etc/rwhoisd/directives
+The file containing directive options.
+.It Pa /etc/rwhoisd/root
+The punt file.
+.It Pa /etc/rwhoisd/x-dir
+The file containing
+.Sy X-
+directive definitions.
+.It Pa /tmp/register_spool/
+The temporary directory used in the register process.
+.It Pa /usr/local/libexec/rwhoisd/
+The directory where
+.Nm
+looks for server-invoked binaries.
+.It Pa /var/log/rwhoisd.log
+The log file used when syslog is disabled.
+.El
 .Sh SEE ALSO
 .Xr rwhois_indexer 8
 .Sh BUGS
