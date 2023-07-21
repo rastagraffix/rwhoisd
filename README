@@ -72,17 +72,12 @@ rwhoisd-1.5.0 and rwhoisd-1.0B9.
 Other files and directories in this distribution include the following.
 
 INSTALL:                  the primary installation instructions
-INSTALL.gen:              the generic autoconf instructurions
-Makefile.in:              the top-level makefile
 README:                   this file
 LICENSE:                  the use conditions and warranty (or lack thereof)
 common:                   common routines used by rwhoisd and other utils.
-config.h.in:              an autoconf-generated header file
-configure:                the autoconf-generated configuration script
-configure.in:             the source to configure
 doc:                      the rest of the server documentation
 doc/operations-guide.txt: the main server documentation
-doc/UPGRAGE:              some notes on upgrading from 1.0 to 1.5
+doc/UPGRADE:              some notes on upgrading from 1.0 to 1.5
 mkdb:                     the MKDB database code
 regexp:                   the regular expression package used by rwhoisd
 sample.data:              a sample installation
@@ -93,5 +88,4 @@ tools/rwhois_deleter:     the source for a command line record deleter
 tools/rwhois_repack:      the source for a command line mkdb index repacker
 tools/scripts:            some shell and perl scripts that might be useful
 tools/install:            some scripts used during installation
-tools/tcpd_wrapper:       tcpd_wrapper 7.6_ipv6.3 by Weitse Venema
 

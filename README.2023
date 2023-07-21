@@ -1,0 +1,15 @@
+The ARIN release of this code in Github hasn't been touched
+since its initial import in 2017.
+
+This fork (rastagraffix/rwhoisd) exists promarily so I can clean
+up the build environment (mostly, nuke all the unnecessary autoconf
+stuff), and get the source tree into a more organized structure.
+With that done it should be a lot easier to package this up for
+/usr/ports builds on my servers.
+
+I don't intend to change the functionality, but I will probably
+do some additional cleanup as I go.  Feel free to email me with
+bug reports or suggestions. (Put 'rastagraffix/rwhoisd' in the
+Subject header, please.)
+
+--lyndon  July 20, 2023
