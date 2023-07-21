@@ -85,11 +85,7 @@ void clear_printed_error_flag PROTO((void));
 
 void print_error PROTO((int err_no, char *str));
 
-#ifndef HAVE_STDARG_H
-void print_response PROTO(());
-#else
 void print_response(int, char *, ...);
-#endif
 
 void print_ok PROTO((void));
 

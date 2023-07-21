@@ -1,44 +1,27 @@
+.POSIX:
 
-# programs
-CC      = @CC@
-INSTALL = @INSTALL@
-SHELL	= /bin/sh
-RM	= rm
+INSTALL = install
 
 # main directories
-prefix      = @prefix@
-exec_prefix = @exec_prefix@
-bindir      = @bindir@
-sbindir     = @sbindir@
+SBINDIR     = /usr/local/sbin
 
-srcdir      = @srcdir@
-VPATH       = @srcdir@
 
 # local libs/includes 
-COMMON_INC    = -I$(srcdir)/../common
+COMMON_INC    = -I../common
 COMMON_LIBS   = -L../common -lrwcommon
 
-WRAP_INC      = @WRAP_INCLUDE@
-WRAP_LIBS     = @WRAP_LIBS@
-
-MKDB_INC      = -I$(srcdir)/../mkdb
+MKDB_INC      = -I../mkdb
 MKDB_LIBS     = -L../mkdb -lmkdb
 
-REGEXP_INC    = -I$(srcdir)/../regexp
+REGEXP_INC    = -I../regexp
 REGEXP_LIBS   = -L../regexp -lregexp
 
-LOCAL_INC     = -I. -I.. -I$(srcdir) $(COMMON_INC) $(WRAP_INC) $(MKDB_INC) $(REGEXP_INC)
-LOCAL_LIBS    = $(WRAP_LIBS) $(MKDB_LIBS) $(COMMON_LIBS) $(REGEXP_LIBS)
+LOCAL_INC     = -I. -I.. $(COMMON_INC) $(MKDB_INC) $(REGEXP_INC)
+LOCAL_LIBS    = $(MKDB_LIBS) $(COMMON_LIBS) $(REGEXP_LIBS)
 
-# use tcp_wrappers to control access to directives 
-USE_TCP_WRAP = -DUSE_TCP_WRAPPERS
+ALL_CFLAGS = $(CFLAGS) $(LOCAL_INC)
 
-CFLAGS  = @CFLAGS@ $(USE_TCP_WRAP)
-ALL_CFLAGS = $(CFLAGS) $(LOCAL_INC) @DEFS@ @IPV6INCLUDES@
-
-LDFLAGS = @LDFLAGS@
-
-LIBS = $(LOCAL_LIBS) @LIBS@
+LIBS = $(LOCAL_LIBS)
 
 OBJS = \
        class_directive.o \
@@ -83,7 +66,7 @@ OBJS = \
 all: rwhoisd
 
 rwhoisd: $(OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) @IPV6LIBS@
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -96,16 +79,14 @@ rwhoisd: $(OBJS)
 #
 
 install:
-	if [ ! -d $(DESTDIR)$(exec_prefix) ]; then mkdir -p $(DESTDIR)$(exec_prefix); fi
 	if [ ! -d $(DESTDIR)$(sbindir) ]; then mkdir -p $(DESTDIR)$(sbindir); fi
 	$(INSTALL) rwhoisd $(DESTDIR)$(sbindir)
 
 uninstall:
-	$(RM) $(DESTDIR)$(sbindir)/rwhoisd
+	rm -f $(DESTDIR)$(sbindir)/rwhoisd
 
 clean:
 	rm -f *.[oa]
 	rm -f rwhoisd
 
 distclean: clean
-	rm -f Makefile

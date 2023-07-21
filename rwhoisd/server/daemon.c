@@ -79,19 +79,17 @@ daemonize()
   }
 
   /* disassociate from the process group if we know how */
-#ifdef HAVE_SETSID
   if (setsid() < 0)
   {
     log(L_LOG_ALERT, CONFIG, "setsid failed: %s", strerror(errno));
     exit(1);
   }
-#endif
 
   umask(0);
 }
 
 /* the sigchld signal handler */
-static RETSIGTYPE
+static void
 sigchld_handler(arg)
   int   arg;
 {
@@ -110,7 +108,7 @@ sigchld_handler(arg)
   signal(SIGCHLD, sigchld_handler);
 }
 
-static RETSIGTYPE
+static void
 sighup_handler(arg)
   int   arg;
 {
@@ -118,7 +116,7 @@ sighup_handler(arg)
   signal(SIGHUP, sighup_handler);
 }
 
-static RETSIGTYPE
+static void
 exit_handler(arg)
   int   arg;
 {
@@ -176,13 +174,8 @@ no_zombies()
 int
 run_daemon()
 {
-#ifdef HAVE_IPV6
   struct sockaddr_storage client_addr;
   struct sockaddr_in6     server_addr;
-#else
-  struct sockaddr_in    client_addr;
-  struct sockaddr_in    server_addr;
-#endif
   int                   sockfd;
   int                   newsockfd;
   int                   clilen;
@@ -191,13 +184,9 @@ run_daemon()
   int                   port         = get_port();
   int                   failure      = 0;
 
-#ifdef HAVE_IPV6
   /* This will accept both IPv4 and IPv6 connections on any interface
      including the loopback so that a local client can send to us. */
   if ( ( sockfd = socket( AF_INET6, SOCK_STREAM, IPPROTO_TCP ) ) < 0 )
-#else
-  if ((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-#endif
   {
     log(L_LOG_ERR, CONFIG, "run_daemon: Can not open socket: %s",
         strerror(errno));
@@ -226,15 +215,9 @@ run_daemon()
   /* for now, we will bind to all IP interfaces (INADDR_ANY) */
   /* Bind our local address so that the client can send to us */
   bzero((char *)&server_addr, sizeof(server_addr));
-#ifdef HAVE_IPV6
   server_addr.sin6_family = AF_INET6;
   server_addr.sin6_port = htons(port);
   server_addr.sin6_addr = in6addr_any;
-#else
-  server_addr.sin_family = AF_INET;
-  server_addr.sin_port = htons(port);
-  server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-#endif
 
   if (bind(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
   {

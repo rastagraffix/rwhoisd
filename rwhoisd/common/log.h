@@ -95,13 +95,8 @@ typedef struct _log_context_struct
 /* old prototypes for backward compatibility */
 
 #define l_strerror strerror
-#ifndef HAVE_STDARG_H
-	void log_error PROTO(());
-	void log_warning PROTO(());
-#else
 	void log_error(char *, ...);
 	void log_warning(char *, ...);
-#endif
 char *get_client_hostname PROTO((int sock));
 char *timestamp PROTO(());
 
@@ -111,11 +106,7 @@ char *timestamp PROTO(());
      (L_LOG_EMERG, L_LOG_ALERT, etc. [see internal_log_level in
      types.h) and SECTION is one of (NETWORK, QUERY, CONFIG, etc [see
      log_section in types.h) */
-#ifndef HAVE_STDARG_H
-	void log PROTO(());
-#else
 	void log (internal_log_levels, int, char *, ...);
-#endif
 
 void setup_logging PROTO((void));
 

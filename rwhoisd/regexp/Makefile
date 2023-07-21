@@ -1,19 +1,12 @@
-# Generated automatically from Makefile.in by configure.
-
-# programs
-CC     = gcc
-AR     = ar
-RANLIB = ranlib
+.POSIX:
 
 # options
 LOCAL_INC = -I.
 LOCAL_LIBS = 
 LOCAL_OPTIONS = 
 
-CFLAGS  = -g -O $(LOCAL_INC) $(LOCAL_OPTIONS) -DHAVE_CONFIG_H
+CFLAGS  = -g -O $(LOCAL_INC) $(LOCAL_OPTIONS)
 LDFLAGS = 
-
-LIBS    = $(LOCAL_LIBS) -lsocket -lresolv -lnsl 
 
 
 OBJS = \
@@ -35,4 +28,3 @@ clean:
 	rm -f *.[oa]
 
 distclean: clean
-	rm -f Makefile

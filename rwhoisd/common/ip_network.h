@@ -13,14 +13,6 @@
 /* includes */
 #include "common.h"
 
-/* missing types */
-#ifndef HAVE_UINT8_T
-typedef unsigned char uint8_t;
-#endif
-#ifndef HAVE_UINT32_T
-typedef unsigned int  uint32_t;
-#endif
-
 struct netinfo
 {
   int     af;           /* address family */

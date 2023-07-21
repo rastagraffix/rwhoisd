@@ -75,26 +75,13 @@ notify_directive(str)
 
 /* log notify information */
 int
-#ifndef HAVE_STDARG_H
-log_entry(va_alist)
-  va_dcl
-#else
 log_entry(char *filename, char *format, ...)
-#endif
 {
   va_list   ap;
   FILE      *fp;
   char      *hostname;
-#ifndef HAVE_STDARG_H
-  char      *format;
-  char      *filename;
-
-  va_start(ap);
-  filename  = va_arg (ap, char*);
-  format    = va_arg(ap, char*);
-#else
   va_start(ap, format);
-#endif
+
   /* lock the file */
   fp = get_file_lock(filename, "a", 60);
   if (!fp)

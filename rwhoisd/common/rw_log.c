@@ -17,12 +17,7 @@
 #include "types.h"
 
 void
-#ifndef HAVE_STDARG_H
-log(va_alist)
-  va_dcl
-#else
 log(internal_log_levels level, int section, char *format, ...)
-#endif
 {
   va_list             ap;
   FILE                *fp;
@@ -34,18 +29,7 @@ log(internal_log_levels level, int section, char *format, ...)
   int                 fd;
   int                 use_syslog;
   int                 syslog_level;
-#ifndef HAVE_STDARG_H
-  int                 section;
-  internal_log_levels level;
-  char                *format;
-
-  va_start(ap);
-  level   = (internal_log_levels) va_arg(ap, int);
-  section = (int) va_arg(ap, int);
-  format  = va_arg(ap, char*);
-#else
   va_start(ap, format);
-#endif
   /* verbosity sets the level at which we ignore log messages */
   if (level > get_verbosity())
   {
@@ -80,13 +64,8 @@ log(internal_log_levels level, int section, char *format, ...)
     }
     strcat(tmp, format);
 
-#ifdef HAVE_VSNPRINTF
     vsnprintf(message, sizeof(message), tmp, ap);
-#else
-    vsprintf(message, tmp, ap);
-#endif
     
-#ifndef NO_SYSLOG
     syslog_level = local_to_syslog(level);
     if (syslog_level < 0)
     {
@@ -94,7 +73,6 @@ log(internal_log_levels level, int section, char *format, ...)
     }
     
     syslog(syslog_level, "%s", message);
-#endif /* NO_SYSLOG */
   }
   else  /* log to file(s) */
   {

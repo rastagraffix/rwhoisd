@@ -54,7 +54,6 @@ addrstring_to_ni( addstr, ni )
   char *addstr;
   struct netinfo *ni;
 {
-#ifdef HAVE_IPV6
   /* neither inet_pton nor inet_addr will convert zero-padded ipv4
      addresses, so un-zero-pad. */
   clean_ipv4_addr(addstr);
@@ -74,21 +73,6 @@ addrstring_to_ni( addstr, ni )
 
   else return( -1 );
 
-#else
-
-  long addr;
-
-  clean_ipv4_addr(addstr);
-
-  addr = inet_addr(addstr);
-  if (addr == -1) return( -1 );
-  ni->af = AF_INET;
-  ni->masklen = 32;
-  memcpy(ni->prefix, &addr, sizeof(struct in_addr));
-
-  return( 0 );
-
-#endif
 }
 
 /* Mask addr to prefix */
@@ -360,7 +344,6 @@ ni_to_addrstring(ni, str, str_len)
     return str;
   }
 
-#ifdef HAVE_IPV6
   if (ni->af == AF_INET6)
   {
     char *r;
@@ -383,7 +366,6 @@ ni_to_addrstring(ni, str, str_len)
 
     return str;
   }
-#endif
   
   return NULL;
 }

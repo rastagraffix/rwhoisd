@@ -571,7 +571,7 @@ decode_index_line(line, item)
     return FALSE;
   }
 
-#if defined(OFF_T64) && defined(HAVE_ATOLL)
+#if defined(OFF_T64)
   item->offset       = atoll(argv[0]);
 #else
   item->offset       = atol(argv[0]);

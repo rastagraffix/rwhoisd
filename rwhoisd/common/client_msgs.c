@@ -145,25 +145,12 @@ void print_ok ()
   printf ("%%ok\n");
 }
 
-#ifndef HAVE_STDARG_H
-void print_response(va_alist)
-    va_dcl
-#else
 void print_response(int resp_no, char *format, ...)
-#endif
 {
   va_list list;
   int i;
   FILE *fp;
-#ifndef HAVE_STDARG_H
-  int resp_no;
-  char *format;
-  va_start(list);
-  resp_no = va_arg(list, int);
-  format = va_arg(list, char *);
-#else
   va_start(list, format);
-#endif /* HAVE_STDARG_H */
 
   fp = get_out_fp();
 

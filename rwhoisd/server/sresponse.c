@@ -62,7 +62,6 @@ connect_server(addr, port, sockfd)
   int  port;
   int  *sockfd;
 {
-#ifdef HAVE_IPV6
   struct addrinfo hints, *gai_result, *server_aip;
   char            portstr[MAX_LINE];
   int             connect_status = -1;
@@ -102,33 +101,6 @@ connect_server(addr, port, sockfd)
     exit(1);
   }
 
-#else
-
-  struct sockaddr_in  server;
-
-  bzero((char *) &server, sizeof(server));
-
-  server.sin_family      = AF_INET;
-  server.sin_addr.s_addr = inet_addr(addr);
-  server.sin_port        = htons(port);
-
-  /* Open socket */
-  if ((*sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-  {
-    log(L_LOG_ERR, SECONDARY,
-        "connect_server: could not open socket: %s", strerror(errno));
-    exit(1);
-  }
- 
-  /* Connect */
-  if (connect(*sockfd, (struct sockaddr *) &server, sizeof(server)) < 0)
-  {
-    log(L_LOG_ERR, SECONDARY,
-        "connect_server: connect error: %s", strerror(errno));
-    exit(1);
-  }
-  
-#endif
   /* Redirect stdin and stdout to socket */
   if (dup2(*sockfd, 0) == -1)
   {

@@ -160,7 +160,7 @@ read_file_struct(fp)
       }
       else if (STR_EQ(tag, MKDB_SIZE_TAG))
       {
-#if defined(OFF_T64) && defined(HAVE_ATOLL)
+#if defined(OFF_T64)
         fi->size = atoll(datum);
 #else
         fi->size = atol(datum);
@@ -249,19 +249,12 @@ read_file_list(index_file, file_list)
   }
 
   /* adjust for the lack of usleep */
-#ifndef HAVE_USLEEP
-  tries = tries / USLEEP_SEC_CONV; if (tries == 0) tries++;
-#endif
 
   fp = fopen(index_file, "r");
   while (fp == NULL && errno == ENOENT && tries > 0)
   {
     tries--;
-#ifdef HAVE_USLEEP
     usleep(USLEEP_WAIT_PERIOD);
-#else
-    sleep(1);
-#endif
     fp = fopen(index_file, "r");
   }
 

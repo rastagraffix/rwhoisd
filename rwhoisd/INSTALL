@@ -14,7 +14,6 @@ Summary
 
 The build and install process involves these steps (at minimum):
 
-./configure
 make
 make install
 
@@ -31,46 +30,6 @@ compiled in defaults for the server (and the helper programs). All of these
 values (except CEILING_MAX_HITS) can be overridden in the various
 configuration files at run time. However, you may wish to set your own
 compiled in defaults.
-
-Run the 'configure' script
-
-This will test for various system dependencies and create the Makefile(s)
-from the Makefile.in files. Please see the 'INSTALL.gen' file for more
-detailed (and generic) instruction on how to use the configure script.
-
-The './configure --help' command will list the available command line
-options to configure. The important ones are outlined below.
-
-The default installation prefix for the RWhois server is
-'/usr/local/rwhoisd'. Thus, unless directed otherwise, the configure script
-will install the RWhois server software in /usr/local/rwhoisd/bin,
-/usr/local/rwhoisd/etc, etc. The '--prefix=<install-dir' command will cause
-the configure script to override this default install location. For example,
-
-./configure --prefix=/opt/rwhoisd
-
-will cause the RWhois server binaries to be installed in /opt/rwhoisd/etc
-and /opt/rwhoisd/bin, and configuration files will be copied to
-/opt/rwhoisd.
-
-If you wish to install the executables in one area and the configuration
-files to another, use both the --prefix and --exec-prefix options. For
-example,
-
-./configure --prefix=/etc/rwhoisd --exec-prefix=/usr/local
-
-will cause the binaries to be installed in /usr/local/etc and /usr/local/bin
-and the configuration files in /etc/rwhoisd.
-
-It is also possible to build for multiple architectures using the same
-source tree, if your make implementation supports the VPATH feature. To do
-this, run the configure script from an empty subdirectory. For example,
-
-mkdir solaris
-cd solaris
-../configure --prefix=/opt/rwhoisd
-
-will cause the software to be built in the 'solaris' subdirectory.
 
 Run 'make'
 
@@ -227,15 +186,6 @@ rwhoisd as root (say, from startup), it will attempt to setuid(2) and
 setgid(2) to the user specified in the 'userid' parameter in the main
 configuration file. It sets the group id to the group set for the user in
 /etc/passwd. It does all this before creating the socket.
-
-Use TCP Wrappers
-
-rwhoisd contains built-in calls to Weitse Venema's TCP Wrapper code. You can
-specify which files to use for the allow and deny files in the main
-configuration file (they default to the standard /etc/hosts.allow and
-/etc/hosts.deny files). You can wrap the server itself using the 'rwhoisd'
-tag, and you can protect individual directives by using the directive name.
-See the operations guide for more details.
 
 Use chroot(2)
 

@@ -526,11 +526,7 @@ get_dot_lock(filename, block)
     return FALSE;
   }
 
-#ifndef HAVE_USLEEP
   wait_period = USLEEP_WAIT_PERIOD;
-#else
-  wait_period = 1;
-#endif
 
   /* create a temporary file, then close it.  If the temp file already
      exists, then creat() will just trunc. it.  (taken from Stevens,
@@ -569,11 +565,7 @@ get_dot_lock(filename, block)
     }
 
     /* wait a period of time before trying again */
-#ifdef HAVE_USLEEP
     usleep(wait_period);
-#else
-    sleep(wait_period);
-#endif
   }
 
   /* clean up after ourselves */
@@ -646,11 +638,7 @@ get_placeholder_lock(filename, block, lock_fd)
       if (errno == EAGAIN)
       {
         /* we sleep here instead of continuously attacking the kernel */
-#ifdef HAVE_USLEEP
         usleep(USLEEP_WAIT_PERIOD);
-#else
-        sleep(1);
-#endif
         continue;
       }
       log(L_LOG_ERR, FILES, "unable to create placeholder lock file '%s': %s",

@@ -25,18 +25,7 @@ sys_gethostname()
 
   /* first we get the base hostname */
 
-#ifdef HAVE_GETHOSTNAME
   gethostname(hostname, MAX_HOSTNAME);
-#else /* HAVE_GETHOSTNAME */
-#ifdef HAVE_UNAME
-  struct utsname uts;
-  uname (&uts);
-  hostname = strncpy(hostname, uts.nodename, MAX_HOSTNAME);
-#else
-  strncpy(hostname, "UNKNOWN", MAX_HOSTNAME);
-#endif /* HAVE_UNAME */
-#endif /* HAVE_GETHOSTNAME */
-
 
   /* now we attempt to get the FQDN */
   hp = gethostbyname(hostname);
@@ -65,7 +54,11 @@ sys_file_lock(fd, op)
   int           fd;
   file_lock_t   op;
 {
-  /* we should have one or the other (flock or lockf) always */
+/*
+ * Generally prefer flock(), but I'm leaving the lockf() code
+ * in just in case.  I've read rumblings that, in some cases,
+ * lockf() is the only one that works over NFS.
+ */
 #ifdef HAVE_LOCKF
   if (op == FILE_LOCK) {
     return(lockf(fd, F_LOCK, 0));
@@ -76,7 +69,7 @@ sys_file_lock(fd, op)
   else if (op == FILE_TEST) {
     return(lockf(fd, F_TEST, 0));
   }
-#elif HAVE_FLOCK
+#endif
   if (op == FILE_LOCK) {
     return(flock(fd, LOCK_EX));
   }
@@ -86,9 +79,6 @@ sys_file_lock(fd, op)
   else if (op == FILE_TEST) {
     return(flock(fd, LOCK_SH | LOCK_NB));
   }
-#else /* we can't do file locking */
-  return(-1);
-#endif /* HAVE_FLOCK */
   else {
     return(-1);
   }

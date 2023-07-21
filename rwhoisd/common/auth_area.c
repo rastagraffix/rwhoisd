@@ -1534,13 +1534,8 @@ add_server(srv_list_ptr, val)
   char           *p             = NULL;
   server_struct  *server        = NULL;
   int             ipaddr        = TRUE;
-#ifdef HAVE_GETADDRINFO
   struct addrinfo hints, *res1;
   int             error;
-#else
-  struct hostent *hp            = NULL;
-  struct in_addr *ptr           = NULL;
-#endif
 
   bzero(name, sizeof(name));
   bzero(port, sizeof(port));
@@ -1564,11 +1559,7 @@ add_server(srv_list_ptr, val)
   /* look for dotted quad style IP addresses */
   for (p = name; *p; p++)
   {
-#ifdef HAVE_IPV6
     if ( !isxdigit(*p) && *p != ':' && *p != '.'  )
-#else
-    if (!isdigit(*p) && *p != '.')
-#endif
     {
       ipaddr = FALSE;
       break;
@@ -1584,7 +1575,6 @@ add_server(srv_list_ptr, val)
   {
 
 
-#ifdef HAVE_GETADDRINFO
       memset( &hints, 0, sizeof(hints) );
       hints.ai_family = PF_UNSPEC;
       hints.ai_socktype = SOCK_STREAM;
@@ -1602,18 +1592,6 @@ add_server(srv_list_ptr, val)
       fprintf( stderr, "SERVER_ADDR = %s\n", addr );
 #endif /* DEBUG */
 
-#else  /* ! HAVE_GETADDRINFO */
-    if ((hp = gethostbyname(name)) == NULL)
-    {
-      log(L_LOG_ERR, CONFIG, "add_server: could not resolve hostname '%s': %s",
-          name, strerror(errno));
-      return FALSE;
-    }
-
-    ptr = (struct in_addr *) (hp->h_addr);
-    bzero(addr, sizeof(addr));
-    sprintf(addr, "%s", inet_ntoa(*ptr));
-#endif  /* HAVE_GETADDRINFO */
 
     server->addr = xstrdup(addr);
   }

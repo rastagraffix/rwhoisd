@@ -1,0 +1,6 @@
+*.a
+*.o
+server/rwhoisd
+tools/rwhois_deleter/rwhois_deleter
+tools/rwhois_indexer/rwhois_indexer
+tools/rwhois_repack/rwhois_repack

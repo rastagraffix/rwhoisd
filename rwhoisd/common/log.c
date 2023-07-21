@@ -139,28 +139,13 @@ file_context_str()
 /* log_error: prints a error message to the console. This is intended
      for server side errors only. */
 void
-#ifndef HAVE_STDARG_H
-log_error(va_alist)
-  va_dcl
-#else
 log_error(char *format, ...)
-#endif
 {
   va_list   list;
   char      err_buf[MAX_LINE];
-#ifndef HAVE_STDARG_H
-  char      *format;
-  va_start(list);
-  format = va_arg(list, char *);
-#else
   va_start(list, format);
-#endif
 
-#ifdef HAVE_VSNPRINTF
   vsnprintf(err_buf, sizeof(err_buf), format, list);
-#else
-  vsprintf(err_buf, format, list);
-#endif
   
   va_end(list);
 
@@ -171,29 +156,13 @@ log_error(char *format, ...)
 /* log_warning: prints a warning message to the console. This is intended
    for server side warnings only. */
 void
-#ifndef HAVE_STDARG_H
-log_warning(va_alist)
-  va_dcl
-#else
 log_warning(char *format, ...)
-#endif
 {
   va_list   list;
   char      err_buf[MAX_LINE];
-#ifndef HAVE_STDARG_H
-  char      *format;
-  
-  va_start(list);
-  format = va_arg(list, char *);
-#else
   va_start(list, format);
-#endif
 
-#ifdef HAVE_VSNPRINTF
   vsnprintf(err_buf, sizeof(err_buf), format, list);
-#else
-  vsprintf(err_buf, format, list);
-#endif
   
   va_end(list);
 
@@ -208,13 +177,9 @@ get_client_hostname(sock)
 {
   static char           buf[MAX_LINE];
   static int            tried_once = FALSE;
-#ifdef HAVE_SOCKADDR_STORAGE
   struct sockaddr_storage   name;
   struct sockaddr_in6   *name2;
   struct sockaddr_in    *name3;
-#else
-  struct sockaddr_in    name;
-#endif
   int                   namelen = sizeof(name);
 
 
@@ -249,7 +214,6 @@ get_client_hostname(sock)
   }
   else
   {
-#ifdef HAVE_IPV6
     name2 = (struct sockaddr_in6 *)&name;
 
     if ( name2->sin6_family == AF_INET6 ){
@@ -259,9 +223,6 @@ get_client_hostname(sock)
 	name3 = (struct sockaddr_in *)&name;
 	sprintf(buf, "%s", inet_ntoa( name3->sin_addr) );
     }
-#else
-    sprintf(buf, "%s", inet_ntoa(name.sin_addr) );
-#endif
   }
 
   return (buf);
